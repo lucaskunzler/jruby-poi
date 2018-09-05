@@ -1,15 +1,28 @@
 require 'tmpdir'
 require 'stringio'
 require 'java'
+require 'pry'
 
 module POI
   class Workbook < Facade(:poi_workbook, org.apache.poi.ss.usermodel.Workbook)
     FONT = org.apache.poi.ss.usermodel.Font
     FONT_CONSTANTS = Hash[*FONT.constants.map{|e| [e.downcase.to_sym, FONT.const_get(e)]}.flatten]
 
-    CELL_STYLE = org.apache.poi.ss.usermodel.CellStyle
-    CELL_STYLE_CONSTANTS = Hash[*CELL_STYLE.constants.map{|e| [e.downcase.to_sym, CELL_STYLE.const_get(e)]}.flatten]
+    # CELL_STYLE = org.apache.poi.ss.usermodel.CellStyle
+    # CELL_STYLE_CONSTANTS = Hash[*CELL_STYLE.constants.map{|e| [e.downcase.to_sym, CELL_STYLE.const_get(e)]}.flatten]
+
+    HORIZONTAL_ALIGNMENT = org.apache.poi.ss.usermodel.HorizontalAlignment
+    HORIZONTAL_ALIGNMENT_CONSTANTS = Hash[*HORIZONTAL_ALIGNMENT.constants.map{|e| [e.downcase.to_sym, HORIZONTAL_ALIGNMENT.const_get(e)]}.flatten]
+
+    VERTICAL_ALIGNMENT = org.apache.poi.ss.usermodel.VerticalAlignment
+    VERTICAL_ALIGNMENT_CONSTANTS = Hash[*VERTICAL_ALIGNMENT.constants.map{|e| [e.downcase.to_sym, VERTICAL_ALIGNMENT.const_get(e)]}.flatten]
+
+    FILL_PATTERN_TYPE = org.apache.poi.ss.usermodel.FillPatternType
+    FILL_PATTERN_TYPE_CONSTANTS = Hash[*FILL_PATTERN_TYPE.constants.map{|e| [e.downcase.to_sym, FILL_PATTERN_TYPE.const_get(e)]}.flatten]
     
+    BORDER_STYLE = org.apache.poi.ss.usermodel.BorderStyle
+    BORDER_STYLE_CONSTANTS = Hash[*BORDER_STYLE.constants.map{|e| [e.downcase.to_sym,  BORDER_STYLE.const_get(e)]}.flatten]
+
     INDEXED_COLORS = org.apache.poi.ss.usermodel.IndexedColors
     INDEXED_COLORS_CONSTANTS = Hash[*INDEXED_COLORS.constants.map{|e| [e.downcase.to_sym, INDEXED_COLORS.const_get(e)]}.flatten]
     
@@ -89,11 +102,29 @@ module POI
       end
 
       style = @workbook.createCellStyle
-      [:alignment, :vertical_alignment, :fill_pattern, :border_right, :border_left, :border_top, :border_bottom].each do | sym |
-        set_value style, sym, options, CELL_STYLE_CONSTANTS do | value |
-          value.to_i
+
+      sym = :alignment
+      set_value style, sym, options, HORIZONTAL_ALIGNMENT_CONSTANTS do | value |
+        value
+      end
+      
+      sym = :vertical_alignment
+      set_value style, sym, options, VERTICAL_ALIGNMENT_CONSTANTS do | value |
+        value
+      end
+
+      sym = :fill_pattern
+      set_value style, sym, options, FILL_PATTERN_TYPE_CONSTANTS do | value |
+        value
+      end
+
+
+      [:border_right, :border_left, :border_top, :border_bottom].each do | sym |
+        set_value style, sym, options, BORDER_STYLE_CONSTANTS do | value |
+          value
         end
       end
+
       [:right_border_color, :left_border_color, :top_border_color, :bottom_border_color, :fill_foreground_color, :fill_background_color].each do | sym |
         set_value( style, sym, options, INDEXED_COLORS_CONSTANTS ) do | value |
           value.index
@@ -261,4 +292,3 @@ module POI
       end
   end
 end
-

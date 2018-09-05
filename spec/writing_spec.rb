@@ -29,16 +29,16 @@ describe "writing Workbooks" do
     
     book = POI::Workbook.create(name)
     title_style = book.create_style :font_height_in_points => 18, :boldweight => :boldweight_bold,
-                                    :alignment => :align_center, :vertical_alignment => :vertical_center
+                                    :alignment => :center, :vertical_alignment => :center
     header_style = book.create_style :font_height_in_points => 11, :color => :white, :fill_foreground_color => :grey_50_percent,
-                                     :fill_pattern => :solid_foreground, :alignment => :align_center, :vertical_alignment => :vertical_center
-    cell_style  = book.create_style :alignment => :align_center, :border_bottom => :border_thin, :border_top => :border_thin,
-                                    :border_left => :border_thin, :border_right => :border_thin, :bottom_border_color => :black,
+                                     :fill_pattern => :solid_foreground, :alignment => :center, :vertical_alignment => :center
+    cell_style  = book.create_style :alignment => :center, :border_bottom => :border_thin, :border_top => :border_thin,
+                                    :border_left => :border_thin, :bottom_border_color => :black,
                                     :right_border_color => :black, :left_border_color => :black, :top_border_color => :black
     form1_style = book.create_style :data_format => '0.00', :fill_pattern => :solid_foreground, :fill_foreground_color => :grey_25_percent,
-                                    :alignment => :align_center, :vertical_alignment => :vertical_center
+                                    :alignment => :center, :vertical_alignment => :center
     form2_style = book.create_style :data_format => '0.00', :fill_pattern => :solid_foreground, :fill_foreground_color => :grey_40_percent,
-                                    :alignment => :align_center, :vertical_alignment => :vertical_center
+                                    :alignment => :center, :vertical_alignment => :center
 
     sheet = book.create_sheet 'Timesheet'
     print_setup = sheet.print_setup
